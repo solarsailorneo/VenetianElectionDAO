@@ -1,0 +1,7 @@
+{
+    "electorate": 1000,
+    "rounds": 10,
+    "round_type": ["lottery", "lottery", "election", "lottery", "election", "lottery", "election", "lottery", "election", "election"],
+    "n_people_voting": [0, 0, 9, 0, 12, 0, 9, 0, 11, 41],
+    "n_people_chosen": [30, 9, 40, 12, 25, 9, 45, 11, 41, 1]
+}

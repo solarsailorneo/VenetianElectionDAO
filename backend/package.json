@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "processVoting.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon processVoting.js",
+    "connect": "moralis-admin-cli connect-local-devchain",
+    "watch:events": "moralis-admin-cli add-contract"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.7",
+    "express": "^4.18.1",
+    "moralis": "^1.6.0",
+    "moralis-admin-cli": "^2.1.16",
+    "nodemon": "^2.0.16"
+  }
+}

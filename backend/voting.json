@@ -1,0 +1,7 @@
+{
+    "electorate": 100,
+    "rounds": 3,
+    "round_type": ["lottery", "lottery", "election"],
+    "n_people_voting": [0, 0, 3],
+    "n_people_chosen": [5, 3, 1]
+}
