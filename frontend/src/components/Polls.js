@@ -4,7 +4,16 @@ import {
   useNativeBalance,
   useNewMoralisObject,
 } from "react-moralis";
-import Poll from "react-polls";
+import { LeafPoll, Result } from 'react-leaf-polls'
+import 'react-leaf-polls/dist/index.css'
+
+// Object keys may vary on the poll type (see the 'Theme options' table below)
+const customTheme = {
+  textColor: 'black',
+  mainColor: '#00B87B',
+  backgroundColor: 'rgb(255,255,255)',
+  alignment: 'center'
+}
 
 let saved_account = "";
 
@@ -268,11 +277,13 @@ useEffect(() => {
   {
     return (
       <>
-        <Poll
+        <LeafPoll
+          type='multiple'
           question={pollQuestion}
-          answers={pollAnswers}
+          results={pollAnswers}
+          theme={customTheme}
           onVote={handleVoteRandom}
-          noStorage
+          isVoted={false}
         />
         <button 
           onClick={handleContinue}>
@@ -286,11 +297,13 @@ useEffect(() => {
     // Authoriased
     return (
       <>
-        <Poll
+        <LeafPoll
+          type='multiple'
           question={pollQuestion}
-          answers={pollAnswers}
+          results={pollAnswers}
+          theme={customTheme}
           onVote={handleVote}
-          noStorage
+          isVoted={false}
         />
       </>
     );
