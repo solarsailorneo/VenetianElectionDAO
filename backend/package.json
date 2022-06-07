@@ -19,6 +19,10 @@
     "express": "^4.18.1",
     "moralis": "^1.6.0",
     "moralis-admin-cli": "^2.1.16",
+    "netlify-lambda": "^2.0.15",
+    "serverless-http": "^3.0.1"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.16"
   }
 }
