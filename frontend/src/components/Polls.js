@@ -80,7 +80,7 @@ function Polls({ more }) {
           address: account
         }
         console.log(JSON.stringify(address));
-        const result = await fetch('/api/', {
+        const result = await fetch('/.netlify/functions/processVoting/', {
           method: 'POST',
           headers: {
             'content-Type': 'application/json'
@@ -124,7 +124,7 @@ function Polls({ more }) {
 
 
   const getElectionResult = async () => {
-    const electionResult = await fetch('/api/');
+    const electionResult = await fetch('/.netlify/functions/processVoting/');
     const electionResultInJson = await electionResult.json();
 
     console.log(electionResultInJson)
@@ -235,7 +235,7 @@ useEffect(() => {
       continueProcess: true
     }
     console.log(JSON.stringify(continueElection));
-    const result = await fetch('/api/', {
+    const result = await fetch('/.netlify/functions/processVoting/', {
       method: 'POST',
       headers: {
         'content-Type': 'application/json'

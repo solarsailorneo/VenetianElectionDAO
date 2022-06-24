@@ -234,10 +234,10 @@ router.post('/vote/', async (req, res) => {
 
 
 
-app.listen(PORT, () => {
-    const url= `http://localhost:${PORT}/`;
-    console.log(`Listening on ${url}`);
-});
+// app.listen(PORT, () => {
+//     const url= `http://localhost:${PORT}/`;
+//     console.log(`Listening on ${url}`);
+// });
 
 
 
