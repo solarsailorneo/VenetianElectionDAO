@@ -1,5 +1,7 @@
+import React, { useState } from 'react';
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
+import { Moralis } from "moralis";
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,11 +46,21 @@ const styles = {
   },
 };
 const App = ({ isServerInfo }) => {
-  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
+  const { isAuthenticated } =
     useMoralis();
 
+  const {isWeb3Enabled, enableWeb3} = useState(false);
+
   useEffect(() => {
-    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
+    if (isAuthenticated && !isWeb3Enabled)
+    {
+      const enableWeb3Func = async () => {
+        await Moralis.enableWeb3();
+        enableWeb3(true);
+      }
+    
+      enableWeb3Func();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
