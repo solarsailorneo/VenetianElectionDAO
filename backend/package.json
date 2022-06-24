@@ -4,6 +4,8 @@
   "description": "",
   "main": "processVoting.js",
   "scripts": {
+    "start": "./node_modules/.bin/netlify-lambda serve .",
+    "build": "./node_modules/.bin/netlify-lambda build .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon processVoting.js",
     "connect": "moralis-admin-cli connect-local-devchain",

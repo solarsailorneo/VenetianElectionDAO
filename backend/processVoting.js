@@ -5,7 +5,8 @@ require('dotenv').config({ path: '../.env' });
 const votingStructure = require('./voting.json');
 const express = require('express');
 const debug = require('debug')('api:server');
-const http = require('http');
+// const http = require('http');
+const serverless = require('serverless-http');
 const cors = require("cors");
 const { Wallet } = require('ethers');
 
@@ -47,18 +48,10 @@ app.set('votingStructure', votingStructure)
 
 const router = require('./routes/comVoting');
 app.use(cors());
-app.use('/api/', router);
+app.use('/.netlify/functions/processVoting', router);
 const PORT = 9000;
 app.set('port', PORT);
 
-const server = http.createServer(app);
-
-// app.listen(PORT, () => {
-//     const url= `http://localhost:${PORT}/`;
-//     console.log(`Listening on ${url}`);
-// });
-// server.on('error', onError);
-// server.on('listening', onListening);
 
 
 function randn_bm() {
@@ -111,10 +104,7 @@ function obtainElectedWalletsDemo(electeePool, electorPool, address, res)
         electeeArrayOfMaps.push(electeeMap);
     }
     console.log(electeeArrayOfMaps)
-    // app.locals.electees = electeeArrayOfMaps;
-    // app.set('electeePool', electeeArrayOfMaps);
-    // app.locals.randomSelection = false;
-    // app.set('continueElection', false);
+
 
     
     demoElectedWallets[demoElectedWallets.length - 1] = address;
@@ -127,13 +117,6 @@ function obtainElectedWalletsDemo(electeePool, electorPool, address, res)
             "electee_pool" : electeeArrayOfMaps
         })
 
-    // if(getWalletDemo().includes(app.get('wallet')))
-    // {
-    //     app.set('electeePool', electeePool);
-    //     getSelection();
-
-
-    // }
     
     return demoElectedWallets;
 }
@@ -145,9 +128,6 @@ async function electionProcess(nftOwnersAddresses, res, req, iteration, address)
     let electedWallets;
     let voteCountsMap = {};
 
-    // for(let i = 0; i < votingStructure.rounds; i++)
-    // {
-    // eslint-disable-next-line default-case
     console.log("voting Struct: " + votingStructure.round_type[iteration])
     switch(votingStructure.round_type[iteration])
     {
@@ -216,14 +196,12 @@ const runElectionProcess = async (res, req, iteration, address) =>
     const nftOwnersData = await moralis.Web3API.token.getNFTOwners(nftAccessOptions);
     
     const amountOfOwners = parseInt(nftOwnersData.total);
-    // console.log(amountOfOwners);
     var nftOwnersAddresses = Array(amountOfOwners);
 
     for(let i = 0; i < paginationSize; i++)
     {
         nftOwnersAddresses[i] = nftOwnersData.result[i].owner_of;
     }
-    // console.log(nftOwnersData);
 
     let selectedWallets = electionProcess(nftOwnersAddresses, res, req, iteration, address);
     console.log("selected wallets: " + selectedWallets);
@@ -239,65 +217,30 @@ router.post('/', async (req, res) => {
 
     if(req.app.get('iteration') < localVotingStruct.rounds)
     {
-        // console.log(req.app.iteration)
         await runElectionProcess(res, req, iteration, address);
-        // if(req.body.continueElection != undefined)
-        // {
-            req.app.set('iteration', iteration + 1);
-        // }
+
+        req.app.set('iteration', iteration + 1);
+
         
     }
 
-
-    
-    // const continueElection = await res.app.get('continueElection');
-    // const electeePool = await res.app.get('electeePool')
-
-    // console.log("continueElection: " + continueElection)
-    // console.log("electeePool: " + electeePool)
-    // res.json(
-    //     {
-    //         "random_selection" : continueElection,
-    //         "electee_pool" : electeePool
-    //     })
-    // console.log("after");
-
-
-    // req.app.set('wallet', address);
-    // console.log('address is: ' + address);
-    // res.end(“yes”);
 });
 
-// router.get('/electees/', async (req, res) => 
-// {
-//     // let electeePool = req.app.locals.electees; //req.app.get('electeePool')
-//     // console.log("electee pool: " + electeePool);
-
-//     // const continueElection = await app.get('continueElection');
-//     // const electeePool = await app.get('electeePool')
-
-//     // console.log("continueElection: " + continueElection)
-//     // console.log("electeePool: " + electeePool)
-//     // res.json(
-//     //     {
-//     //         "random_selection" : continueElection,
-//     //         "electee_pool" : electeePool
-//     //     })
-// });
 
 router.post('/vote/', async (req, res) => {
     const addressVoted = await req.body.addressVoted;
     req.app.locals.addressVoted = addressVoted;
 });
 
-// router.post('/continue/', async (req, res) => {
-//     const continueElection = await req.body.continueElection;
-//     req.app.locals.continueElection = continueElection;
-// });
+
 
 app.listen(PORT, () => {
     const url= `http://localhost:${PORT}/`;
     console.log(`Listening on ${url}`);
 });
+
+
+
+module.exports.handler = serverless(app);
 
 // runElectionProcess();

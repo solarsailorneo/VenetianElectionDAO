@@ -1,0 +1,6 @@
+# backend
+backend/node_modules
+backend/functions
+
+#frontend
+frontend/node_modules
